@@ -1,0 +1,208 @@
+---
+title: "MatrixEQTL + Network Clustering"
+author: "John Platig & Maud Fagny"
+date: "July 28, 2016"
+output: pdf_document
+---
+## General setting
+Running these scripts require to have the following softwares and packages installed:
+plink2 v1.90 or higher (https://www.cog-genomics.org/plink2)
+R packages:
+MatrixEQTL (https://cran.r-project.org/web/packages/MatrixEQTL/)
+condor (https://github.com/jplatig/condor)
+igraph (https://cran.r-project.org/web/packages/igraph/)
+data.table (https://cran.r-project.org/web/packages/data.table/)
+plyr (https://cran.r-project.org/web/packages/plyr/)
+gplots (https://cran.r-project.org/web/packages/gplots/)
+ggplot2 (https://cran.r-project.org/web/packages/ggplot2/)
+RColorBrewer (https://cran.r-project.org/web/packages/RColorBrewer/)
+dendextend (https://cran.r-project.org/web/packages/dendextend/)
+survival (https://cran.r-project.org/web/packages/survival/)
+broom (https://cran.r-project.org/web/packages/broom/)
+metap (https://cran.r-project.org/web/packages/metap/)
+
+R Bioconductor (http://bioconductor.org)
+R Bioconductor packages:
+Biobase (http://bioconductor.org/packages/release/bioc/html/Biobase.html)
+limma (http://bioconductor.org/packages/release/bioc/html/limma.html)
+MatrixEQTL
+
+## Required files
+Running these scripts require to have the following data files:
+Files that are accessible via dbGaP:
+*A VCF file with genotyping data.
+*An R object with filtered/normalized gene expression data (derived from read counts file using the R yarn package).
+*A tab separated file containing a lookup table to match SNPs VCF ID with rsID.
+Files that are accessible via the GTEx portal (www.gtexportal.org) or in the GTEx paper supplementary material (The GTEx Consortium (2015) The Genotype-Tissue Expression (GTEx) pilot analysis: Multitissue gene regulation in humans, Science 348:648-660):
+*A tab separated file with the first principal components of genotyping data.
+*An R object derived from a file with the eQTL results obtained by the GTEx consortium
+Files that are provided:
+*An R object with tissues names, shortname and description ("data/tissue_names.RData").
+*An R object with SNPs anotations ("data/annotations_snps.RData")
+* An R object with genes annotations ("data/annotations_snps.RData")
+* An R object with a lookup table for gene ENSEMBL ID/HGNC ID ("data/genes_Ensembl_HGNC_corres.RData")
+* An R object with the SNPs Epigenome roadmap annotations ("data/epigenome_state_snps.RData")
+* A curated version of the GWAS catalog (duplicated lines and entries without rsID have been removed, "data/gwas_catalog_curated.txt")
+* A file with the list of GWAS traits and diseases corresponding to metabolic traits ("data/gwas_metabolism_terms.txt")
+* A file with the list of GWAS traits and diseases corresponding to autoimmune diseases ("data/gwas_autoimmune_terms.txt")
+*A tab separated file with the LD blocks ("output/dosageMatrices/LDblockInfo.txt")
+*A file with the list of genes from community 86 of heart keft ventricle annotated as "cellular respiration" by Gene Ontology ("data/heart_left_ventricle_86_cellularrespiration_HGNC.txt").
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Data Normalization and eQTL mapping
+## Genotype QC 
+This bash script runs the genotype QC and generates the input files for matrix eQTL:
+```{bash qc}
+Rscript code/QCscript.R 
+Rscript code/create_matrix_eqtl_files.R
+```
+
+This bash script create the file containing the list of tissues that match the filtering criteria:
+```{bash tissues}
+code/create_list_tissues.sh data/ code/ tissues_gtex.txt 
+```
+
+This bash script compute cis and trans eQTLs:
+```{r eqtlBash, engine='bash'}
+
+code/run_matrix_eqtl_gtex.R code/ tissues_gtex.txt 
+```
+
+This bash script merge all cis and trans eqtl outputs with the RsIDs provided by the gtex consortium. Adds column to track whether or not an eQTL assocation is cis or trans.
+```{r annotationMerge, engine='bash'}
+
+code/eqtl_annotation_merge_bytissue.sh FDRcis FDRtrans window code/tissues_gtex.txt rna.dir eqtl.dir lookup
+
+```
+
+R script to create eqtl R object, count samples, and plot number of eQTL as a function of sample size:
+```{r summarize, engine='bash'}
+
+Rscript code/summarize_eqtls.R
+Rscript code/plot_nbeqtl_samplesize.R
+
+```
+
+This bash script cluster all eqtl networks using condor:
+```{r clustering, engine='bash'}
+
+code/run_eqtl_network_clustering_fast.sh FDRcis FDRtrans window code/tissues_gtex.txt eqtl.dir FALSE
+
+```
+
+R script to create the summary of communities content and output summary table
+```{r comsum, engine='bash'}
+
+Rscript code/extract_snp_genes_edges.R
+
+```
+
+R script for making matrix plots.
+```{r makeMatrixPlots, engine='bash'}
+Rscript code/makeCondorMatrixPlot.R 
+
+```
+
+R script to obtain the summary of cis- and trans-eQTLs
+```{r count, engine='bash'}
+
+Rscript code/count_eqtls.R
+
+```
+
+R script to create communities R object and plot modularity
+```{r plot1, engine='bash'}
+
+Rscript code/analyse_cluster_modularity.R
+
+```
+
+R script to compare our cis-eQTLs with GTEx cis-eQTLs
+```{r compareGTEXeqtl, engine='bash'}
+
+Rscript code/compare_eqtls_our_gtex.R
+```
+
+R script to calculate distances between SNPs and their associated genes
+```{r dist, engine='bash'}
+
+Rscript code/distance_to_TSS.R
+
+```
+
+R script to extract the number of chromosomes in each communities and plot distribution
+```{r combychrom, engine='bash'}
+
+Rscript code/plot_cluster_distrib_chr_summary.R
+
+```
+
+R script to compare clustering using condor and correlation hierarchical clustering
+```{r heir, engine='bash'}
+
+Rscript code/comparison_condor_correlation_analysis.R
+
+```
+
+R script to perform over-representation of Gene Ontology categories among communities
+```{r go, engine='bash'}
+
+Rscript code/analyze_clusters_GO_KEGG.R
+
+```
+
+R script to plot heatmap with Gene Ontology results
+```{r heatmap, engine='bash'}
+
+Rscript code/analyze_GO_results.R	
+
+```
+
+R script to generate table with number of genes within 1Mb of each SNP
+```{r neargene, engine='bash'}
+
+Rscript code/identify_snps_neighbors.R	
+
+```
+
+R script to generate plots of enrichement in chromatin states and regulomeDB categories among high core-scores and high-degree SNPs
+```{r regplots, engine='bash'}
+
+Rscript code/OR_plot.R	
+
+```
+
+R script to generate plots distribution of SNP degree and core-score among all SNPs and GWAS SNPs
+```{r gwasstuff, engine='bash'}
+
+Rscript code/gwas_degree_plots.R
+
+```
+
+R script to calculate pvalues for observed/expected distribution of SNP degree among GWAS SNPs and plot figure
+```{r gwaspvals, engine='bash'}
+
+Rscript code/resample_degree_gwas.R
+
+```
+
+R script to calculate pvalues for distribution of core-scores among non-GWAS and GWAS SNPs
+```{r ldperm, engine='bash'}
+
+code/gwasLDperm.sh
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

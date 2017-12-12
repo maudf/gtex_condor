@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+     <meta charset="utf-8">
+          <style>
+          text{
+               font-size:12px;
+          }
+     .mainBars rect{
+          shape-rendering: auto;
+          fill-opacity: 0;
+          stroke-width: 0.5px;
+          stroke: rgb(0, 0, 0);
+          stroke-opacity: 0;
+     }
+     .subBars{
+          shape-rendering:crispEdges;
+     }
+     .edges{
+          stroke:none;
+          fill-opacity:0.5;
+     }
+     .header{
+          text-anchor:middle;
+          font-size:16px;
+     }
+     line{
+          stroke:grey;
+     }
+     </style>
+          <body>
+          <script src="https://d3js.org/d3.v4.min.js"></script>
+          <script src="http://vizjs.org/viz.v1.1.0.min.js"></script>
+          <script>
+          
+          
+          
+          var data=[
+ ["1: regulation of transcription","ADS",3],
+["1: regulation of transcription","ATA",1],
+["1: regulation of transcription","ATT",2],
+["1: regulation of transcription","EMC",3],
+["1: regulation of transcription","EMS",2],
+["1: regulation of transcription","FIB",2],
+["1: regulation of transcription","HRV",1],
+["1: regulation of transcription","LNG",1],
+["1: regulation of transcription","SMU",3],
+["1: regulation of transcription","SKN",3],
+["1: regulation of transcription","THY",3],
+["1: regulation of transcription","TNV",4],
+["1: regulation of transcription","WBL",1],
+["2: T cell activation","ADS",1],
+["2: T cell activation","ATA",1],
+["2: T cell activation","ATT",1],
+["2: T cell activation","EMC",1],
+["2: T cell activation","EMS",1],
+["2: T cell activation","FIB",1],
+["2: T cell activation","HRV",1],
+["2: T cell activation","SMU",1],
+["2: T cell activation","SKN",1],
+["2: T cell activation","THY",1],
+["2: T cell activation","TNV",1],
+["2: T cell activation","WBL",1],
+["3: immunity and inflammation","ADS",6],
+["3: immunity and inflammation","ATA",4],
+["3: immunity and inflammation","ATT",1],
+["3: immunity and inflammation","EMC",5],
+["3: immunity and inflammation","EMS",3],
+["3: immunity and inflammation","FIB",5],
+["3: immunity and inflammation","HRV",4],
+["3: immunity and inflammation","LNG",1],
+["3: immunity and inflammation","SMU",5],
+["3: immunity and inflammation","SKN",6],
+["3: immunity and inflammation","THY",6],
+["3: immunity and inflammation","TNV",4],
+["3: immunity and inflammation","WBL",3],
+["4: primary metabolic process","ADS",2],
+["4: primary metabolic process","ATA",1],
+["4: primary metabolic process","ATT",1],
+["4: primary metabolic process","EMC",2],
+["4: primary metabolic process","EMS",2],
+["4: primary metabolic process","FIB",2],
+["4: primary metabolic process","LNG",1],
+["4: primary metabolic process","SMU",2],
+["4: primary metabolic process","SKN",2],
+["4: primary metabolic process","THY",2],
+["4: primary metabolic process","TNV",2],
+["4: primary metabolic process","WBL",1],
+["5: antigen processing and presentation","ADS",1],
+["5: antigen processing and presentation","ATA",1],
+["5: antigen processing and presentation","ATT",1],
+["5: antigen processing and presentation","EMC",1],
+["5: antigen processing and presentation","EMS",1],
+["5: antigen processing and presentation","FIB",1],
+["5: antigen processing and presentation","HRV",1],
+["5: antigen processing and presentation","SMU",1],
+["5: antigen processing and presentation","SKN",1],
+["5: antigen processing and presentation","THY",1],
+["5: antigen processing and presentation","TNV",1],
+["5: antigen processing and presentation","WBL",1], 
+]
+          var color ={'1: regulation of transcription' :"#1B9E77", '2: T cell activation' :"#A6761D", '3: immunity and inflammation' :"#E6AB02", '4: primary metabolic process' :"#E7298A", '5: antigen processing and presentation':"#D95F02"};
+          var svg = d3.select("body").append("svg").attr("width", 960).attr("height", 800);
+          
+          
+          var g =[svg.append("g").attr("transform","translate(550,100)").style("font-family","helvetica")];
+          
+          var bp=[ viz.bP()
+                   .data(data)
+                   .min(12)
+                   .pad(2)
+                   .height(600)
+                   .width(200)
+                   .barSize(35)
+                   .fill(d=>color[d.primary])		
+                   ,viz.bP()
+                   .data(data)
+                   .value(d=>d[3])
+                   .min(12)
+                   .pad(20)
+                   .height(600)
+                   .width(200)
+                   .barSize(35)
+                   .fill(d=>color[d.primary])
+                   ];
+          
+          [0,1].forEach(function(i){
+               g[i].call(bp[i])
+               
+               g[i].append("text").attr("x",-50).attr("y",-8).style("text-anchor","middle").style("font-size","20px").style("font-family","helvetica").text("GO Terms");
+               g[i].append("text").attr("x", 250).attr("y",-8).style("text-anchor","middle").style("font-size","20px").style("font-family","helvetica").text("Tissues");
+               
+               g[i].selectAll(".mainBars")
+               .on("mouseover",mouseover)
+               .on("mouseout",mouseout);
+               
+               g[i].selectAll(".mainBars").append("text").attr("class","label")
+               .attr("x",d=>(d.part=="primary"? -30: 30))
+               .attr("y",d=>+6)
+               .text(d=>d.key)
+               .style("font-size","18px")
+               .attr("text-anchor",d=>(d.part=="primary"? "end":"start")
+              );
+               
+               
+          });
+          
+          function mouseover(d){
+               [0,1].forEach(function(i){
+                    bp[i].mouseover(d);
+                    
+                    g[i].selectAll(".mainBars").select(".perc")
+                    .text(function(d){ return d3.format("0.0%")(d.percent)});
+               });
+          }
+          function mouseout(d){
+               [0,1].forEach(function(i){
+                    bp[i].mouseout(d);
+                    
+                    g[i].selectAll(".mainBars").select(".perc")
+                    .text(function(d){ return d3.format("0.0%")(d.percent)});
+               });
+          }
+          d3.select(self.frameElement).style("height", "800px");
+          </script>
+               </body>
+               </html>
+               

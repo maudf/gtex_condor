@@ -1,0 +1,34 @@
+Allergy
+Alopecia areata
+Arthritis (juvenile idiopathic)
+Asthma
+Asthma or COPD
+Atopic dermatitis
+Autoimmune diseases
+Behcet's disease
+Celiac disease
+Celiac disease or Rheumatoid arthritis
+Chronic obstructive pulmonary disease
+Crohn's disease
+Dermatomyositis
+Diabetes
+Emphysema-related traits
+Graves' disease
+Hypothyroidism
+Inflammatory bowel disease
+Interferon alpha levels in systemic lupus erythematosus
+Local histogram emphysema pattern
+Lupus nephritis in systemic lupus erythematosus
+Multiple sclerosis
+Myasthenia gravis
+Neonatal lupus
+Psoriasis
+Psoriatic arthritis
+Rheumatoid arthritis
+Rheumatoid arthritis (ACPA-negative)
+Sjögren's syndrome
+Systemic lupus erythematosus
+Systemic lupus erythematosus and Systemic sclerosis
+Systemic sclerosis
+Type 1 diabetes
+Wegener's granulomatosis

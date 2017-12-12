@@ -1,0 +1,13 @@
+adipose_subcutaneous
+artery_aorta
+artery_tibial
+cells_transformed_fibroblasts
+esophagus_mucosa
+esophagus_muscularis
+heart_left_ventricle
+lung
+muscle_skeletal
+nerve_tibial
+skin
+thyroid
+whole_blood
