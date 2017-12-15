@@ -5,7 +5,7 @@ library(Biobase)
 rm(list=ls())
 
 ### Load data
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 load(normalized.rnaseq)
 
 ###Set up environment variables

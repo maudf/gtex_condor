@@ -1,7 +1,7 @@
 ### plot_resampling_shared_GO_pvalues.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 args = commandArgs(trailingOnly=TRUE)
 
 ### Set variables

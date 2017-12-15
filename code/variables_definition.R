@@ -48,7 +48,6 @@ reads_threshold = 6
 expr_sample = 10
 
 ## matrix_eqtl_gtex.R
-useModel = modelLINEAR;
 pvOutputThreshold_cis = 1e-1; # P-values under which results are printed for cis-eQTLs
 pvOutputThreshold_tra = 1e-4; # P-values under which results are printed for trans-eQTLs
 cisDist = 1e6; # Maximum distance for local gene-SNP pairs for cis-eQTLs

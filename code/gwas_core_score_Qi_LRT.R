@@ -1,7 +1,7 @@
 ### gwas_core_score_Qi_LRT.R
 
 ### Load data
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set parameters
 term.file <- paste0("gwas_", term, "_terms.txt")

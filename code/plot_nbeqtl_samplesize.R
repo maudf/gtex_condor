@@ -1,13 +1,14 @@
 ###summarize_eqtls.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set parameters
 eqtls.file <- paste0("all_tissues_eqtls_fdr", FDRcis, FDRtrans, "_", window, "MB.Rdata")
 
 ### Load data
 load(paste0(tissue.file))
+load(samples.file)
 load(paste0(eqtl.dir, eqtls.file))
 
 ### Find number of cis and trans eQTLs

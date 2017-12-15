@@ -1,7 +1,7 @@
 ###identify_snps_neighbors.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Load packages
 library(data.table)

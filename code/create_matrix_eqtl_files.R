@@ -1,7 +1,7 @@
 ### create_matrix_eqtl_files.R
 
 ###Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Load libraries
 library(Biobase)

@@ -1,7 +1,7 @@
 ### resample_degree_gwas.R
 
 ###Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set parameters
 nsam <- 10000

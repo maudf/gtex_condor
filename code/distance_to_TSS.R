@@ -1,7 +1,7 @@
 ### distance_to_TSS.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set parameters
 eqtls.file <- paste0("all_tissues_eqtls_fdr", FDRcis, FDRtrans, "_", window, "MB.Rdata")

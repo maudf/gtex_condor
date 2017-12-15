@@ -5,7 +5,7 @@ library(condor)#, lib.loc="~/R/x86_64-redhat-linux-gnu-library/3.2/")
 library(igraph)
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set parameters
 args <- commandArgs(trailingOnly = TRUE)

@@ -1,7 +1,7 @@
 ### tissue_specificity_network_gcc.R
 
 ###Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 library(metap)
 
 ### Set parameters

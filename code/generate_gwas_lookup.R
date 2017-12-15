@@ -1,7 +1,7 @@
 ### generate_gwas_lookup.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Load data
 gwas_data <- read.delim( gwas.file, header=TRUE, sep="\t", stringsAsFactors=FALSE)

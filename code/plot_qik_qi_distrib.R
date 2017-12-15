@@ -1,7 +1,7 @@
 ### plot_qik_qi_distrib.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set variables
 communities.file <- paste0("all_tissues_communities_fdr", FDRcis, FDRtrans,

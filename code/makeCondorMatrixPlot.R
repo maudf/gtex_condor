@@ -5,7 +5,7 @@ library(condor)
 library(igraph)
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ### Set parameters
 community.file <- paste0("all_tissues_communities_fdr", FDRcis, FDRtrans, "_", window, "MB.Rdata")

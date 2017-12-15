@@ -1,7 +1,7 @@
 ### plot_OR_epigenomic_states_across_tissues.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 library(gtools)
 library(data.table) 
 

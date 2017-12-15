@@ -1,7 +1,7 @@
 ### resample_GO_results_shared.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 args = commandArgs(trailingOnly=TRUE)
 tis <- args[1] # Tissue name
 ind <- args[2] # index

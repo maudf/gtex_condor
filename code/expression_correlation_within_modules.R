@@ -1,7 +1,7 @@
 ### expression_correlation_within_modules.R
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 library(RColorBrewer)
 
 ### Set parameters

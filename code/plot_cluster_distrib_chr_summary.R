@@ -6,7 +6,7 @@
 
 
 ### Load data
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 library(data.table)
 
 ### Set variables

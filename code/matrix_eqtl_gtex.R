@@ -5,13 +5,14 @@
 library(MatrixEQTL)
 
 ### Load variables
-load("code/variables_definition.R")
+source("code/variables_definition.R")
 
 ###Set up environment variables
 output.dir = eqtl.dir
 args <- commandArgs(trailingOnly=TRUE)
 tissue_id <- args[1]
 print(tissue_id)
+useModel = modelLINEAR;
 
 ### Read input files
 SNP_file_name = paste0(geno.dir, tissue_id,".dosage");
