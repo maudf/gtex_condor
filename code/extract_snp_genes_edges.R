@@ -11,7 +11,6 @@ community.file <- paste0("all_tissues_communities_fdr", FDRcis, FDRtrans, "_", w
 snps.file <- paste0('all_tissues_snps_fdr', FDRcis, FDRtrans, "_", window, "MB.Rdata")
 genes.file <- paste0('all_tissues_genes_fdr', FDRcis, FDRtrans, "_", window, "MB.Rdata")
 edges.file <- paste0('all_tissues_edges_fdr', FDRcis, FDRtrans, "_", window, "MB.Rdata")
-summary.communities.file <- paste0('summary_communities_fdr', FDRcis, FDRtrans, "_", window, "MB.txt")
 
 ### Load communities
 list.communityfiles <- list.files(cluster.dir, pattern="_modularity.Rdata")
@@ -21,7 +20,7 @@ for(f in list.communityfiles){
     tissue <- gsub(paste0("fdr", FDRcis, FDRtrans, "_", window, "MB_edges_modularity.Rdata"), "", f)
     communities[[`tissue`]] <- condor.modularity
 }
-save(communities, file=paste(cluster.dir, summary.communities.file))
+save(communities, file=paste(cluster.dir, community.file))
 
 ###Extract snps
 snps <- lapply(communities, function(x){tapply(as.character(x$red.memb$red.names), x$red.memb$com, function(y){y})})
